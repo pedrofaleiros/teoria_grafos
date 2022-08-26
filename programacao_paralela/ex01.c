@@ -4,9 +4,11 @@
 
 int main() {
 
+	int num_steps = 1000000;
+	int num_threads = 0;
 
-	int num_threads = 2;
-	int num_steps = 1000;
+	printf("\nNUM THREADS: ");
+	scanf("%d", &num_threads);
 
 	double pi, *sum, step;
 
@@ -15,6 +17,10 @@ int main() {
 	step = 1.0/(double) num_steps;
 
 	omp_set_num_threads(num_threads);
+
+	double t1, t2;
+
+	t1 = omp_get_wtime();
 
 	#pragma omp parallel
 	{
@@ -25,16 +31,19 @@ int main() {
 		double x;
 
 		for(i = id, sum[id] = 0.0; i < num_steps; i = i + num){
-			x = (1+0.5)*step;
-			sum[id] = sum[id] + 4.0/(1.0+x*x);
+			x = (i+0.5)*step;
+			sum[id] += 4.0/(1.0+x*x);
 		}
 	}
+
+	t2 = omp_get_wtime();
 
 	for(int i = 0; i < num_threads; i++){
 		pi += sum[i] * step;
 	}
 
-	printf("pi: %lf\n", pi);
+	printf("\nTime: %lf", t2-t1);
+	printf("\npi: %lf\n", pi);
 
 
 	return 0;
