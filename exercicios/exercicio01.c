@@ -28,7 +28,7 @@ int main()
 		mat[y - 1][x - 1] = 1;
 	}
 
-	printf("\nMatriz de adjacencia\n");
+	//printf("\nMatriz de adjacencia\n");
 	for (int i = 0; i < maior; i++)
 	{
 		for (int j = 0; j < maior; j++)
@@ -38,12 +38,14 @@ int main()
 				mat[i][j] = 1;
 			}
 
-			printf("%d ", mat[i][j]);
+			//printf("%d ", mat[i][j]);
 		}
-		printf("\n");
+		//printf("\n");
 	}
 
 	printf("\nLista de adjacencia\n");
+
+	int vertices[m];
 
 	for(int i = 0; i < maior; i++){
 		printf("\n%d -> ",i+1);
