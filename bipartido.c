@@ -14,7 +14,7 @@ typedef struct elemento{
 
 typedef struct vertice{
 	int visitado;
-	int distancia;
+	int cor;
 	struct lista * lista_adj;
 }vertice;
 
@@ -41,7 +41,7 @@ void inclui_lista(lista * l, int valor){
 
     if(l->inicio != NULL){
 
-		aux = l->inicio;
+		/* aux = l->inicio;
 		while(aux){
 			if(aux->valor == novo->valor) return;
 
@@ -49,9 +49,9 @@ void inclui_lista(lista * l, int valor){
 				aux->prox = novo;
 			}
 			aux = aux->prox;
-		}
+		} */
 
-        /* aux = l->inicio;
+        aux = l->inicio;
         int inserido = 0;
         while(aux != NULL && !inserido){
             if(aux->valor == novo->valor) return;
@@ -69,7 +69,7 @@ void inclui_lista(lista * l, int valor){
         }
         if(!inserido){
             ant->prox = novo;
-        } */
+        }
     }else{
         l->inicio = novo;
     }
@@ -93,14 +93,12 @@ void inclui_aresta(vertice * v, int valor){
 	inclui_lista(v->lista_adj, valor);
 }
 
-void dfs(vertice * v, int i, int distancia){
-
-	if(v[i].visitado == 1) return;
+void dfs(vertice * v, int i, int cor){
 
 	//printf("%d ", i);
 	v[i].visitado = 1;
 	
-	v[i].distancia = distancia;
+	v[i].cor = cor;
 
 	if(v[i].lista_adj == NULL) return;
 
@@ -110,16 +108,10 @@ void dfs(vertice * v, int i, int distancia){
 
 	while(aux){
 		if(v[aux->valor].visitado == 0){
-			dfs(v, aux->valor, distancia+1);
+			dfs(v, aux->valor, !cor);
 		}
 		aux = aux->prox;
 	}
-
-
-}
-
-void p(char * s){
-	printf("%s", s);
 }
 
 int main(){
@@ -140,41 +132,22 @@ int main(){
 		inclui_aresta(&v[b], a);
 	}
 
-	/* for(int i = 1; i <= n; i++){
-		if(v[i].visitado == 0){
-			printf("\n %d -> ", ++cont);
-			dfs(v, i, 0);
-		}
-	} */
+	dfs(v, 1, 0);
 
-	//dfs(v, 4, 0);
+	for(i = 1; i <= n; i++){
+		elemento * aux = v[i].lista_adj->inicio;
 
-	/* for(int i = 1; i <= n; i++){
-		printf("\n %d -> %d", i, v[i].distancia);
-	} */
-
-	//printf("\n cont: %d\n", cont);
-
-	if(a == (n-1)){
-
-		int cont = 0;
-		for(int i = 1; i<= n; i++){
-			if(v[i].visitado == 0){
-				dfs(v, i, 0);
-				cont++;
+		while(aux){
+			if(v[i].cor == v[aux->valor].cor){
+				printf("\n Nao bipartido");
+				return 0;
 			}
+			aux = aux->prox;
 		}
-
-		if(cont == 1){
-			printf("\n ARVORE");
-		}else{
-			printf("\nNAO");
-		}
-
-	}else{
-		printf("\nNAO");
 	}
 
+	printf("\n BIPARTIDO");
 
+	printf("\n");
 	return 0;
 }

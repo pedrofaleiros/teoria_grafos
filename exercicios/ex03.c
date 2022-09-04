@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define PPP
-
 typedef struct lista{
 	struct elemento * inicio;
 }lista;
@@ -15,6 +13,7 @@ typedef struct elemento{
 typedef struct vertice{
 	int visitado;
 	int distancia;
+	int mulher;
 	struct lista * lista_adj;
 }vertice;
 
@@ -99,8 +98,8 @@ void dfs(vertice * v, int i, int distancia){
 
 	//printf("%d ", i);
 	v[i].visitado = 1;
-	
 	v[i].distancia = distancia;
+
 
 	if(v[i].lista_adj == NULL) return;
 
@@ -118,20 +117,16 @@ void dfs(vertice * v, int i, int distancia){
 
 }
 
-void p(char * s){
-	printf("%s", s);
-}
-
 int main(){
 
-	int n, a, i;
+	int n, i;
 	vertice * v;
 
-	scanf("%d %d", &n, &a);
+	scanf("%d", &n);
 
 	v = malloc(sizeof(vertice)* (n+1));
 
-	for(i = 0; i < a; i++){
+	for(i = 0; i < n-1; i++){
 		int a, b;
 
 		scanf("%d %d", &a, &b);
@@ -140,41 +135,36 @@ int main(){
 		inclui_aresta(&v[b], a);
 	}
 
-	/* for(int i = 1; i <= n; i++){
-		if(v[i].visitado == 0){
-			printf("\n %d -> ", ++cont);
-			dfs(v, i, 0);
-		}
-	} */
+	dfs(v, 1, 0);
 
-	//dfs(v, 4, 0);
+	int qtd_mul;
 
-	/* for(int i = 1; i <= n; i++){
-		printf("\n %d -> %d", i, v[i].distancia);
-	} */
+	scanf("%d", &qtd_mul);
 
-	//printf("\n cont: %d\n", cont);
+	lista * mulheres = lista_alloc();
 
-	if(a == (n-1)){
-
-		int cont = 0;
-		for(int i = 1; i<= n; i++){
-			if(v[i].visitado == 0){
-				dfs(v, i, 0);
-				cont++;
-			}
-		}
-
-		if(cont == 1){
-			printf("\n ARVORE");
-		}else{
-			printf("\nNAO");
-		}
-
-	}else{
-		printf("\nNAO");
+	for(i = 0; i < qtd_mul; i++){
+		int x;
+		scanf("%d", &x);
+		v[x].mulher = 1;
 	}
 
+	int menor = n;
+	for(i = 2; i <= n; i++){
+		if(v[i].mulher){
+			if(v[i].distancia < menor){
+				menor = v[i].distancia;
+			}
+		}
+	}
+	
+	for(i = n; i >= 2; i--){
+		if(v[i].mulher && v[i].distancia == menor){
+			inclui_lista(mulheres, i);
+		}
+	}
+
+	printf("%d", mulheres->inicio->valor);
 
 	return 0;
 }
