@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define PPP
+#define true 1
+#define false 0
 
 typedef struct lista{
 	struct elemento * inicio;
@@ -93,25 +94,31 @@ void inclui_aresta(vertice * v, int valor){
 	inclui_lista(v->lista_adj, valor);
 }
 
-void dfs(vertice * v, int i, int cor){
+int dfs(vertice * v, int i, int cor){
 
 	//printf("%d ", i);
 	v[i].visitado = 1;
 	
 	v[i].cor = cor;
 
-	if(v[i].lista_adj == NULL) return;
+	if(v[i].lista_adj != NULL){
+		elemento * aux;
 
-	elemento * aux;
+		aux = v[i].lista_adj->inicio;
 
-	aux = v[i].lista_adj->inicio;
-
-	while(aux){
-		if(v[aux->valor].visitado == 0){
-			dfs(v, aux->valor, !cor);
+		while(aux){
+			if(v[aux->valor].visitado == 0){
+				dfs(v, aux->valor, !cor);
+			}
+			
+			if(v[i].cor == v[aux->valor].cor){
+				return false;
+			}
+			aux = aux->prox;
 		}
-		aux = aux->prox;
 	}
+
+	return true;
 }
 
 int main(){
@@ -132,9 +139,11 @@ int main(){
 		inclui_aresta(&v[b], a);
 	}
 
-	dfs(v, 1, 0);
+	dfs(v, 1, 0) == true ? 
+	printf("\n Bipartido") : 
+	printf("\n NAO");
 
-	for(i = 1; i <= n; i++){
+	/* for(i = 1; i <= n; i++){
 		elemento * aux = v[i].lista_adj->inicio;
 
 		while(aux){
@@ -144,9 +153,8 @@ int main(){
 			}
 			aux = aux->prox;
 		}
-	}
-
-	printf("\n BIPARTIDO");
+	} 
+	printf("\n BIPARTIDO");*/
 
 	printf("\n");
 	return 0;
