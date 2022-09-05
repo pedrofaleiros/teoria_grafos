@@ -78,6 +78,7 @@ bool dfs(Vertice * v, int i, int distancia, int cor){
 	v[i].distancia = distancia;
 	v[i].cor = cor;
 
+	bool ret = true;
 	if(v[i].lista_adj != NULL){
 
 		elemento * aux;
@@ -86,7 +87,7 @@ bool dfs(Vertice * v, int i, int distancia, int cor){
 		while(aux != NULL){
 
 			if(v[aux->valor].visitado == 0){
-				dfs(v, aux->valor, distancia+1, !cor);
+				ret = dfs(v, aux->valor, distancia+1, !cor);
 			}
 
 			if(v[i].cor == v[aux->valor].cor){
@@ -97,7 +98,7 @@ bool dfs(Vertice * v, int i, int distancia, int cor){
 		}
 	}
 
-	return true;
+	return ret;
 }
 
 bool is_tree(Vertice * v, int qtd_v, int qtd_a){
