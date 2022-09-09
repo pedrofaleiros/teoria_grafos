@@ -4,6 +4,7 @@
 #define PPP
 
 typedef struct lista{
+	int qtd;
 	struct elemento * inicio;
 }lista;
 
@@ -14,7 +15,6 @@ typedef struct elemento{
 
 typedef struct vertice{
 	int visitado;
-	int distancia;
 	struct lista * lista_adj;
 }vertice;
 
@@ -40,18 +40,7 @@ void inclui_lista(lista * l, int valor){
     novo->valor = valor;
 
     if(l->inicio != NULL){
-
-		aux = l->inicio;
-		while(aux){
-			if(aux->valor == novo->valor) return;
-
-			if(aux->prox == NULL){
-				aux->prox = novo;
-			}
-			aux = aux->prox;
-		}
-
-        /* aux = l->inicio;
+        aux = l->inicio;
         int inserido = 0;
         while(aux != NULL && !inserido){
             if(aux->valor == novo->valor) return;
@@ -69,10 +58,12 @@ void inclui_lista(lista * l, int valor){
         }
         if(!inserido){
             ant->prox = novo;
-        } */
+        }
     }else{
         l->inicio = novo;
     }
+
+	l->qtd += 1;
 }
 
 void mostra(lista * l){
@@ -93,15 +84,13 @@ void inclui_aresta(vertice * v, int valor){
 	inclui_lista(v->lista_adj, valor);
 }
 
-void dfs(vertice * v, int i, int distancia){
+void dfs(vertice * v, int i){
 
 	if(v[i].visitado == 1) return;
 
 	//printf("%d ", i);
 	v[i].visitado = 1;
 	
-	v[i].distancia = distancia;
-
 	if(v[i].lista_adj == NULL) return;
 
 	elemento * aux;
@@ -110,14 +99,13 @@ void dfs(vertice * v, int i, int distancia){
 
 	while(aux){
 		if(v[aux->valor].visitado == 0){
-			dfs(v, aux->valor, distancia+1);
+			dfs(v, aux->valor);
 		}
 		aux = aux->prox;
 	}
 
 
 }
-
 
 int main(){
 
@@ -137,41 +125,52 @@ int main(){
 		inclui_aresta(&v[b], a);
 	}
 
-	/* for(int i = 1; i <= n; i++){
+	int cont = 0;
+	for(i = 1; i <= n; i++){
 		if(v[i].visitado == 0){
-			printf("\n %d -> ", ++cont);
-			dfs(v, i, 0);
+			dfs(v, i);
+			cont++;
 		}
-	} */
-
-	//dfs(v, 4, 0);
-
-	/* for(int i = 1; i <= n; i++){
-		printf("\n %d -> %d", i, v[i].distancia);
-	} */
-
-	//printf("\n cont: %d\n", cont);
-
-	if(a == (n-1)){
-
-		int cont = 0;
-		for(int i = 1; i<= n; i++){
-			if(v[i].visitado == 0){
-				dfs(v, i, 0);
-				cont++;
-			}
-		}
-
-		if(cont == 1){
-			printf("\n ARVORE");
-		}else{
-			printf("\nNAO");
-		}
-
-	}else{
-		printf("\nNAO");
 	}
 
+	int * vet = malloc(sizeof(int)*cont);
 
+	for(i = 0; i <= n; i++){
+		v[i].visitado = 0;
+	}
+
+	int aux = 0;
+	int vis = 0;
+	int vis2 = 0;
+	for(i = 1; i <= n; i++){
+		if(v[i].visitado == 0){
+			dfs(v, i);
+
+			for(int j = 1; j <= n; j++){
+				if(v[j].visitado == 1){
+					vis++;
+				}
+			}
+
+			vet[aux] = vis - vis2;
+
+			vis2 = vis;
+			vis = 0;
+			aux++;
+		}
+	}
+
+	int res = 1;
+
+	for(i = 0; i < cont; i++){
+		res *= vet[i];
+	}
+
+	printf("\n Saidas: %d", cont);
+	
+	printf("\n Chefes: %d", res);
+
+	
+	printf("\n");
 	return 0;
 }
