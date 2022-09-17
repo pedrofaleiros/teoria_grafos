@@ -152,5 +152,4 @@ void dfs(vertice * v, int i, int dist){
 			aux = aux->prox;
 		}
 	}
-
 }
