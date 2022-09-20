@@ -46,7 +46,7 @@ void inclui_aresta(vertice * v, int valor){
 	inclui_elemento(v->adj, valor);
 }
 
-void bfs(vertice * v, int i, fila * f);
+void bfs(vertice * v, int i);
 
 int main(){
 
@@ -63,18 +63,7 @@ int main(){
 		inclui_aresta(&ver[b], a);
 	}
 
-	fila * f = aloca_fila();
-
-	enqueue(f, 9);
-
-	while(!is_empty(f)){
-		int x = pop(f);
-
-		if(ver[x].visitado == 0){
-			ver[x].visitado = 1;
-			bfs(ver, x, f);
-		}
-	}
+	bfs(ver, 1);
 
 	for(i = 1; i <= n; i++){
 		printf("\n %d: distancia = %d", i, ver[i].distancia);
@@ -84,23 +73,35 @@ int main(){
 	return 0;
 }
 
-void bfs(vertice * v, int i, fila * f){
+void bfs(vertice * v, int i){
 
-	elemento * aux;
+    fila * f = aloca_fila();
 
-    if(v[i].adj == NULL){
-        return;
-    }
+    elemento * aux;
 
-    aux = v[i].adj->inicio;
+    int current;
 
-    while(aux){
-        if(v[aux->valor].visitado == 0){
-            enqueue(f, aux->valor);
-			v[aux->valor].distancia = v[i].distancia + 1;
+    enqueue(f, i);
+
+    while(!is_empty(f)){
+        current = pop(f);
+
+        if(v[current].visitado == 0){
+            v[current].visitado = 1;
+
+            aux = v[current].adj->inicio;
+            while(aux != NULL){
+                enqueue(f, aux->valor);
+
+                if(v[aux->valor].distancia == 0 && aux->valor != i){
+                    v[aux->valor].distancia = v[current].distancia + 1;
+                }
+                aux = aux->prox;
+            }
         }
-        aux = aux->prox;
+
     }
+
 }
 
 void enqueue(fila * f, int num)
