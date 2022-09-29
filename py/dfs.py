@@ -15,7 +15,6 @@ class Grafo:
         if v1 >= self.qtd or v2 >= self.qtd or v1==v2:
             return False
         self.vertices[v1].lista_adj.append(v2)
-        self.vertices[v2].lista_adj.append(v1)
 
     def addVertice(self):
         self.vertices.append(Vertice())
@@ -40,20 +39,23 @@ class Grafo:
                 self.dfs_distancia(elemento, distancia+1)
 
 
-grafo = Grafo(5)
+def main():
+    n = int(input('N: '))
 
-grafo.addAresta(0, 1)
-grafo.addAresta(0, 2)
-grafo.addAresta(1, 3)
-grafo.addAresta(1, 4)
-grafo.addAresta(1, 5)
-grafo.addAresta(4, 7)
-grafo.addAresta(4, 4)
+    graph = Grafo(n)
 
-grafo.addVertice()
+    while True: 
+        x, y = input("Digite dois números ").split()
+        x = int(x)
+        y = int(y)
 
-grafo.addAresta(4, 5)
+        if x == -1 or y == -1:
+            break
 
-grafo.dfs_distancia(0, 0)
+        graph.addAresta(x, y)
+        graph.addAresta(y, x)
 
-grafo.mostra()
+    graph.mostra()
+
+
+main()
