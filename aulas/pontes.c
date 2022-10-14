@@ -7,7 +7,52 @@ typedef struct {
 	int tamanho_lista;
 }Vertice;
 
-void dfs(Vertice * v, int pos, int pai);
+typedef struct lista{
+	struct elemento * inicio;
+}lista;
+
+typedef struct elemento{
+	int x;
+	int y;
+	struct elemento * prox;
+}elemento;
+
+void inclui(lista * l, int x, int y)
+{
+	elemento * novo;
+	novo = malloc(sizeof(elemento));
+	novo->x = x;
+	novo->y = y;
+	novo->prox = NULL;
+
+	if(l->inicio == NULL){
+		l->inicio = novo;
+	}else{
+		elemento * aux;
+		aux = l->inicio;
+
+		while(aux->prox != NULL){
+			aux = aux->prox;
+		}
+
+		aux->prox = novo;
+	}
+}
+
+void mostra(lista * l)
+{
+	if(l->inicio == NULL){
+		printf("\nNao tem pontes");
+	}
+	elemento * aux;
+	aux = l->inicio;
+	while(aux){
+		printf("\n %d -> %d", aux->x, aux->y);
+		aux = aux->prox;
+	}
+}
+
+void dfs(Vertice * v, int pos, int pai, lista * lista_pontes);
 
 int * in;
 int * lower;
@@ -36,13 +81,17 @@ int main(){
 		vertices[y].lista_adj[ vertices[y].tamanho_lista++ ] = x;
 	}
 
-	dfs(vertices, 1, 0);
+	lista * pontes = malloc(sizeof(lista));
+
+	dfs(vertices, 1, 0, pontes);
+
+	mostra(pontes);
 
 	printf("\n");
 	return 0;
 }
 
-void dfs(Vertice * v, int pos, int pai)
+void dfs(Vertice * v, int pos, int pai, lista * lista_pontes)
 {
 	in[pos] = cc;
 	lower[pos] = cc;
@@ -54,11 +103,12 @@ void dfs(Vertice * v, int pos, int pai)
 		int filho = v[pos].lista_adj[i];
 
 		if(v[filho].visitado == 0){
-			dfs(v, filho, pos);
+			dfs(v, filho, pos, lista_pontes);
 
 			if(lower[filho] > in[pos]){
 				//ponte
-				printf("\nPonte: %d -> %d", pos, filho);
+				inclui(lista_pontes, pos, filho);
+				//printf("\nPonte: %d -> %d", pos, filho);
 			}else{
 				lower[pos] = min(lower[pos], lower[filho]);
 			}
