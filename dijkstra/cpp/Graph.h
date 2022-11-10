@@ -1,6 +1,6 @@
 #include <iostream>
 #include <stdlib.h>
-#include "MinHeap.h"
+#include "PriorityQueue.h"
 
 using namespace std;
 
@@ -93,7 +93,7 @@ public:
 	}
 
 	void dijkstra(int root){
-		MinHeap heap = MinHeap();
+		PriorityQueue heap = PriorityQueue();
 
 		Elemento aux;
 		int cur, dist, elemento, i;

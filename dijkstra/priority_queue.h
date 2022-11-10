@@ -12,7 +12,7 @@ typedef struct
 {
 	int qtd;
 	struct registro *topo;
-} Heap;
+} PriorityQueue;
 
 typedef struct {
 	int current;
@@ -20,14 +20,14 @@ typedef struct {
 } Dupla;
 
 Registro *aloca_registro(int cur, int dist);
-Heap *aloca_heap();
-void push(Heap *l, int cur, int dist);
-int empty(Heap *l);
-void mostra(Heap * l);
+PriorityQueue *aloca_priority_queue();
+void push(PriorityQueue *l, int cur, int dist);
+int empty(PriorityQueue *l);
+void mostra(PriorityQueue * l);
 Dupla nova_dupla(int cur, int dist);
-Dupla pop(Heap * l);
+Dupla pop(PriorityQueue * l);
 
-Dupla pop(Heap * l)
+Dupla pop(PriorityQueue * l)
 {
 	if(empty(l)){
 		return nova_dupla(-1, -1);
@@ -55,12 +55,12 @@ Dupla nova_dupla(int cur, int dist)
 	return nova;
 }
 
-void mostra(Heap * l)
+void mostra(PriorityQueue * l)
 {
 	Registro * aux = l->topo;
 
 	if(empty(l)){
-		printf("\n Heap vazia");
+		printf("\n PriorityQueue vazia");
 	}
 
 	while(aux){
@@ -69,7 +69,7 @@ void mostra(Heap * l)
 	}
 }
 
-void push(Heap *l, int cur, int dist)
+void push(PriorityQueue *l, int cur, int dist)
 {
 	Registro *novo;
 	novo = aloca_registro(cur, dist);
@@ -119,18 +119,18 @@ Registro *aloca_registro(int cur, int dist)
 	return novo;
 }
 
-Heap *aloca_heap()
+PriorityQueue *aloca_priority_queue()
 {
-	Heap *nova;
+	PriorityQueue *nova;
 
-	nova = malloc(sizeof(Heap));
+	nova = malloc(sizeof(PriorityQueue));
 	nova->qtd = 0;
 	nova->topo = 0;
 
 	return nova;
 }
 
-int empty(Heap *l)
+int empty(PriorityQueue *l)
 {
 	return l->qtd == 0;
 }

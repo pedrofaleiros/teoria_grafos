@@ -1,4 +1,4 @@
-#include "min_heap.h"
+#include "priority_queue.h"
 
 #define INF 9999
 
@@ -51,7 +51,7 @@ int main()
 
 void dijkstra(Vertice * v, int root, int * vet, int num_v)
 {
-	Heap * heap = aloca_heap();
+	Heap * heap = aloca_priority_queue();
 	Dupla aux;
 	int cur, dist, i, elemento;
 

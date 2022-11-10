@@ -51,11 +51,11 @@ private:
 	Elemento *prox;
 };
 
-class MinHeap
+class PriorityQueue
 {
 
 public:
-	MinHeap()
+	PriorityQueue()
 	{
 		this->size = 0;
 		this->topo = NULL;
@@ -151,7 +151,7 @@ private:
 
 /* int main()
 {
-	MinHeap * heap = new MinHeap();
+	PriorityQueue * heap = new PriorityQueue();
 
 	heap->push(0, 2);
 	heap->push(0, 3);
