@@ -70,9 +70,8 @@ private:
 	int tamanho_lista;
 };
 
-class Graph
-{
-public:
+class Graph {
+	public:
 	Graph(int n)
 	{
 		this->num_vertices = n;
@@ -130,7 +129,7 @@ public:
 		//return vet;
 	}
 
-private:
+	private:
 	int num_vertices;
 	Vertice vertices[100];
 };
