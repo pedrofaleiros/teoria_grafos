@@ -16,6 +16,14 @@ Elemento novo_elemento(int valor, int peso){
 	return novo;
 }
 
+int soma_fat(int num){
+	if(num <= 1){
+		return 1;
+	}else{
+		return num + soma_fat(num-1);
+	}
+}
+
 int fat(int num)
 {
 	if(num <= 1){
@@ -29,7 +37,4 @@ void addAresta(Vertice * v, int x, int y, int peso){
 	Elemento novo = novo_elemento(y, peso);
 
 	v[x].lista_adj[ v[x].tamanho_lista++ ] = novo;
-
-	novo = novo_elemento(x, peso);
-	v[y].lista_adj[ v[y].tamanho_lista++ ] = novo;
 }
