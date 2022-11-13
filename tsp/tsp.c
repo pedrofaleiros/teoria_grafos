@@ -26,6 +26,13 @@ int main()
 		addAresta(vertices, y, x, peso);
 	}
 
+	for(i = 0; i < n; i ++){
+		printf("\n %d -> ", i);
+		for(j = 0; j < vertices[i].tamanho_lista; j++){
+			printf("(%d, peso: %d) ", vertices[i].lista_adj[j].valor, vertices[i].lista_adj[j].peso);
+		}
+	}
+
 	int origin = 0;
 	calcula_rota(vertices, n, origin);
 
@@ -80,6 +87,7 @@ void calcula_distancia(Vertice * vertices, int num_v, int origin, int * vis, int
 
 		if(copia_vis[el_da_lista] == 0){
 			flag = 0;
+			if(distancia+this_dist > menor_distancia) return;
 			calcula_distancia(vertices, num_v, origin, copia_vis, rota, indice+1, distancia+this_dist, el_da_lista);
 		}
 	}
