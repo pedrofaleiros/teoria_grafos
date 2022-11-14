@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "grafo.h"
 
+#include "omp.h"
+
 void calcula_rota(Vertice * vertices, int num_vertices, int origin);
 void calcula_distancia(Vertice * vertices, int num_v, int origin, int * vis, int * rota, int indice, int distancia, int this_elemento);
 int distancia_ate_origin(Vertice * v, int num_v, int dest, int origin);
@@ -34,7 +36,11 @@ int main()
 	} */
 
 	int origin = 0;
+
+	double t1 = omp_get_wtime();
 	calcula_rota(vertices, n, origin);
+
+	printf("\n Tempo: %lf", omp_get_wtime()-t1);
 
 	printf("\n Menor distancia: %d", menor_distancia);
 	printf("\n Rota: ");
@@ -68,8 +74,6 @@ void calcula_rota(Vertice * vertices, int num_vertices, int origin)
 
 void calcula_distancia(Vertice * vertices, int num_v, int origin, int * vis, int * rota, int indice, int distancia, int this_elemento)
 {
-	if(distancia > menor_distancia) return;
-
 	int i, tam_lista, el_da_lista, this_dist;
 
 	vis[this_elemento] = 1;
@@ -82,6 +86,10 @@ void calcula_distancia(Vertice * vertices, int num_v, int origin, int * vis, int
 		this_dist = vertices[this_elemento].lista_adj[i].peso;
 
 		if(vis[el_da_lista] == 0){
+			if(distancia+this_dist > menor_distancia){
+				vis[this_elemento] = 0;
+				return;
+			}
 			calcula_distancia(vertices, num_v, origin, vis, rota, indice+1, distancia+this_dist, el_da_lista);
 		}
 	}
@@ -108,88 +116,3 @@ int distancia_ate_origin(Vertice * v, int num_v, int dest, int origin)
 		}
 	}
 }
-
-/* 
-Grafos de Exemplo
-4
-2 3 34
-2 1 19
-0 3 27
-3 1 17
-0 1 16
-2 0 28
-Menor distancia: 91
-Rota: 0 3 1 2 0
-
-5
-0 1 19
-0 2 28
-0 3 27
-0 4 13
-1 2 17
-1 3 29
-1 4 28
-2 3 18
-2 4 30
-3 4 20
-Menor distancia: 87
-Rota: 0 1 2 3 4 0 
-
-6
-0 1 19
-0 2 28
-0 3 27
-0 4 13
-1 2 17
-1 3 29
-1 4 28
-2 3 18
-2 4 30
-3 4 20
-0 5 33
-1 5 43
-2 5 36
-3 5 19
-4 5 20
-Menor distancia: 106
-Rota: 0 1 2 3 5 4 0 
-
-7
-0 1 19
-0 2 28
-0 3 27
-0 4 13
-1 2 17
-1 3 29
-1 4 28
-2 3 18
-2 4 30
-3 4 20
-0 5 33
-1 5 43
-2 5 36
-3 5 19
-4 5 20
-0 6 40
-1 6 21
-2 6 22
-3 6 40
-4 6 48
-5 6 58
-Menor distancia: 132
-Rota: 0 1 6 2 3 5 4 0 
-
-5
-0 1 24
-0 2 30
-0 3 34
-0 4 55
-1 2 32
-1 3 46
-1 4 52
-2 3 18
-2 4 25
-3 4 31
-Menor distancia: 146
-Rota: 0 1 2 4 3 0 
-*/
