@@ -1,25 +1,20 @@
 import matplotlib.pyplot as plt
 import numpy as np
-
-pontos = [
-	[0, 0],
-	[10, 2],
-	[8, 4],
-	[6, 6],
-	[10, 8],
-	[2, 10],
-	[3, 4]
-]
+import random
 
 x = []
 y = []
 
-for ponto in pontos:
-	x.append(ponto[0])
-	y.append(ponto[1])
+for ponto in range(10):
+	p1 = random.randint(0, 15)
+	p2 = random.randint(0, 15)
+	x.append(p1)
+	y.append(p2)
 
-x.append(pontos[0][0])
-y.append(pontos[0][1])
+	print(p1, p2)
+	plt.scatter(p1, p2, label=1)
 
-plt.plot(x, y)
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.title("Scatter Plot")
 plt.show()
