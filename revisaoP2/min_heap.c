@@ -11,7 +11,7 @@ typedef struct {
     int tamanho;
 } MinHeap;
 
-Elemento novo(int cur, int dist)
+Elemento novo_elemento(int cur, int dist)
 {
     Elemento novo;
 
@@ -33,7 +33,7 @@ void push(MinHeap * mh, Elemento el)
 
 Elemento pop(MinHeap * mh)
 {
-    if(empty(mh)) return novo(-1, -1);
+    if(empty(mh)) return novo_elemento(-1, -1);
 
     int indice_menor = 0;
 
@@ -58,7 +58,8 @@ Elemento pop(MinHeap * mh)
 
 void mostra(MinHeap * mh)
 {
-    printf("\n: ");
+    printf("\n heap: ");
+    if(empty(mh)) printf("---");
     for(int i = 0; i < mh->tamanho; i++){
         printf("%d ", mh->vetor[i].distancia);
     }
@@ -67,26 +68,34 @@ void mostra(MinHeap * mh)
 int main()
 {
     MinHeap * heap = malloc(sizeof(MinHeap));
+    char c[2];
+    int x = 1, dist;
 
-    push(heap, novo(1, 4));
-    push(heap, novo(1, 3));
-    push(heap, novo(1, 5));
-    push(heap, novo(1, 2));
-    push(heap, novo(1, 6));
+    while(x == 1){
+        printf("\n> ");
+        scanf("%s", c);
 
-    mostra(heap);
+        switch (c[0])
+        {
+        case 'a':
+            printf("\npush: ");
+            scanf("%d", &dist);
 
-    printf("\n pop: %d", pop(heap).distancia);
-    printf("\n pop: %d", pop(heap).distancia);
-    printf("\n pop: %d", pop(heap).distancia);
-    printf("\n pop: %d", pop(heap).distancia);
-    printf("\n pop: %d", pop(heap).distancia);
-    printf("\n pop: %d", pop(heap).distancia);
-
-    push(heap, novo(1, 3));
-    push(heap, novo(1, 1));
-
-    mostra(heap);
+            push(heap, novo_elemento(0, dist));
+            break;
+        case 'r':
+            printf("\npop: %d", pop(heap).distancia);
+            break;
+        case 'm':
+            mostra(heap);
+            break;
+        case 'z':
+            x = 0;
+            break;
+        default:
+            break;
+        }
+    }
 
     printf("\n");
     return 0;

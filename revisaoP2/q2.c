@@ -66,23 +66,18 @@ void bridges(Vertice * v, int elemento, int pai)
 
     for(i = 0; i < v[elemento].tamanho; i++){
         filho = v[elemento].lista_adj[i];
-
         if(filho != pai){
-            
             if(v[filho].visitado == 0){
-                
                 bridges(v, filho, elemento);
-                
                 v[elemento].lower = min(v[elemento].lower, v[filho].lower);
-                
                 if(v[filho].lower > v[elemento].in){
                     printf("A estrada de que conecta a cidade %d a %d não pode entrar em reforma\n", elemento+1, filho+1);
                 }
-
             }else{
                 v[elemento].lower = min(v[elemento].lower, v[filho].in);
             }
-
+        }else{
+            continue;
         }
     }
 }
